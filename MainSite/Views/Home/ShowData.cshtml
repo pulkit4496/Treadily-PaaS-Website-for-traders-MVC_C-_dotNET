@@ -1,0 +1,270 @@
+﻿@using MainSite.Models;
+@model List<GetData>
+
+@{
+    ViewBag.Title = "ShowData";
+    MainSite.Models.UserData usr = (MainSite.Models.UserData)Session["UserData"];
+}
+<link href="~/Content/mystyle.css" rel="stylesheet" type="text/css" />
+<h2>ShowData</h2>
+<style>
+    th, td, table {
+        text-align: center;
+    }
+
+    #tbl1 td {
+        text-align: start;
+        width: 50%;
+    }
+
+    #tbl2 td {
+        color: black;
+    }
+
+    #tbl3 td, th {
+        text-align: start;
+        padding: 10px;
+    }
+</style>
+<div class="sidenav">
+    <div class="row">
+        <div class="col-md-offset-2" style="margin-top:70px;color:ghostwhite;font-family: 'serif','Times New Roman', Times,;font-size:medium;">
+            <img src="~/Images/profile.jpg" style="width:50px;height:50px;border-radius:50px;border:1px solid;border-color:black;" />&nbsp;Pulkit.Agarwal
+        </div>
+    </div>
+    <table id="tbl2" class="table table-hover" style="margin-top:20px;background-color:#48929b">
+        <tr>
+            <th>
+                Avg. $ Trade
+            </th>
+            <td>
+                $ @usr.avg_gain
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Avg. $ Gain
+            </th>
+            <td>
+                $ @usr.avg_gainn
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning %
+            </th>
+            <td>
+                @usr.win_pct %
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Profit
+            </th>
+            <td>
+                $ @usr.tot_gain
+            </td>
+        </tr>
+
+
+    </table>
+
+    <table id="tbl3" style="width:100%">
+        <tr>
+            <th>
+                Total Trades
+            </th>
+            <td>
+                @usr.total_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning
+            </th>
+            <td>
+                @usr.win_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Losing
+            </th>
+            <td>
+                @usr.lose_trd
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+    <a href="/Home/stats/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View More Stats" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+    <a href="/Home/ProfitChart/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View Profit Chart" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+</div>
+<div class="main">
+    @foreach (var data in Model.OrderByDescending(i => i.Date))
+    {
+        var a = data.BuySell;
+        var b = "";
+        var c = "";
+        var d = data.Profit.Split(' ').ToArray()[1];
+        var e = "";
+        var f = data.ID;
+        if (a == "Buy")
+        {
+            b = "Long";
+            e = "#066F11";
+        }
+        else
+        {
+            b = "Short";
+            e = "#C30505";
+        }
+
+        if (d == "Profit")
+        {
+
+            c = "#6B8E23";
+        }
+        else
+        {
+
+            c = "#DC143C";
+        }
+
+        <hr />
+
+
+        <div style="color:azure ;background-color:@c;padding:6px; border-radius:5px;" class="row">
+
+            <div id="did" style="display:none">@Html.DisplayFor(x => data.ID)</div>
+
+            @*@Html.ActionLink("View", "PopUpp", new { id = data.ID })*@
+            <div class="priceBtn col-md-2">
+
+                @*<a href="/Home/ViewTrade/@f" style="color:ghostwhite">
+                        @Html.DisplayFor(x => data.Profit)
+                    </a>*@
+                <a class="viewcount" href="#" style="color:ghostwhite">
+                    @Html.DisplayFor(x => data.Profit)
+                </a>
+            </div>
+
+            <div class="col-md-offset-10">
+                <strong>@Html.DisplayFor(x => data.TickerName)</strong>&nbsp;<span style="background-color:lightgoldenrodyellow;padding:1px;color:@e;border-radius:3px">@b</span>@*Stock*@
+            </div>
+
+        </div>
+        <div class="row">
+            <div id="did" style="display:none">@Html.DisplayFor(x => data.ID)</div>
+            <div class="col-md-2" style="font-size:12px;color:grey;left:0;top:0">@data.Date</div>
+            <div class="col-md-offset-10" style="font-size:12px;color:grey;">
+                &nbsp;&nbsp;
+                <a class="btnEdit" href="#">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+                <a class="btnDelete" href="#">Delete</a>
+            </div>
+        </div>
+        <div style="border-color:burlywood;border:1px solid forestgreen;padding:8px; border-radius:10px">
+            @Html.DisplayFor(x => data.Comments)
+        </div>
+
+
+
+        <div class="row">
+            <div id="did" style="display:none">@Html.DisplayFor(x => data.ID)</div>
+            <div class="col-md-offset-10">
+                <span id="bel">@Html.DisplayFor(x => data.Believe)</span><a href="#" class="btnBelieve"><img src="~/Images/believe.jpg" style="width:20px;height:20px" /></a>
+                &nbsp;
+                <span id="lik">@Html.DisplayFor(x => data.Likes)</span><a href="#" class="btnLike"><img src="~/Images/like.jpg" style="width:20px;height:20px" /></a>
+                &nbsp;
+                <span id="dis">@Html.DisplayFor(x => data.Dislikes)</span><a href="#" class="btnDislike"><img src="~/Images/dislike.jpg" style="width:20px;height:20px" /></a>
+            </div>
+        </div>
+        <hr />
+        <hr class="row" style="border:0.5px dotted cadetblue" />
+    }
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+@*<script src="~/Scripts/myscript.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $(".viewcount").click(function () {
+            var ajaxCallURL = "/Home/ViewTradeRedirect/" + $(this).parent().parent().find("#did").text();
+            window.location.href = ajaxCallURL;
+        });
+        $(".btnEdit").click(function () {
+            var ajaxCallURL = "/Home/Edit/" + $(this).parent().parent().find("#did").text();
+            window.location.href = ajaxCallURL;
+        });
+        $(".btnDelete").click(function () {
+            var ajaxCallURL = "/Home/Delete/" + $(this).parent().parent().find("#did").text();
+            window.location.href = ajaxCallURL;
+        });
+
+        $(".btnBelieve").click(function () {
+            var ajaxCallURL = "/Home/Believe/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#bel").text();
+            $(this).prev("#bel").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;x
+
+
+
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+        $(".btnLike").click(function () {
+            var ajaxCallURL = "/Home/Like/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#lik").text();
+            $(this).prev("#lik").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+        $(".btnDislike").click(function () {
+            var ajaxCallURL = "/Home/Dislike/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#dis").text();
+            $(this).prev("#dis").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    // $("#dis").text(parseInt(a)+1);
+                    //$(this).prev("#dis").text(parseInt(a) + 1);
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Treadily</title>
+    @*<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />*@
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <style>
+        
+        .navbar-brand {
+            color:ghostwhite!important;
+        }
+        .navbar-default{
+            background-color:green!important;
+        }
+        .navbar-right{
+            color:ghostwhite!important;
+        }
+        .text-center{
+            background-color:seagreen!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top" >
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="/"><img src="~/Images/letter-t10.jpg" width="50px" height="50px" style="border-radius:50px" /></a>
+                &nbsp;
+            </div>
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                @Html.ActionLink("Treadily", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Enter New Trade", "GetData", "Home", new { area = "" }, new { @class = "navbar-text navbar-right" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+    </div>  
+    
+    <footer class="text-center" style="width:100%;background-color:seagreen!important; position:fixed ;z-index:1;bottom:0; color:#ccc; height:45px; line-height:45px;">
+        <p>&copy; @DateTime.Now.Year - Treadily</p>
+    </footer>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</body>
+</html>

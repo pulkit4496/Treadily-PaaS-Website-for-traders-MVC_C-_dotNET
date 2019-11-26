@@ -1,0 +1,363 @@
+﻿@model MainSite.Models.UserData
+
+@{
+    ViewBag.Title = "stats";
+    MainSite.Models.UserData buy = (MainSite.Models.UserData)ViewData["LongTrades"];
+
+    MainSite.Models.UserData sell = (MainSite.Models.UserData)ViewData["ShortTrades"];
+
+}
+<link href="~/Content/mystyle.css" rel="stylesheet" type="text/css" />
+<style>
+    th, td, table {
+        text-align: center;
+    }
+
+    #tbl1 td {
+        text-align: start;
+        width: 50%;
+    }
+
+    #tbl2 td {
+        color: black;
+    }
+
+    #tbl3 td, th {
+        text-align: start;
+        padding: 10px;
+    }
+
+    #main-table tr:nth-child(even) {
+        background-color: lemonchiffon
+    }
+
+    #main-table tr:first-child {
+        background-color: lightgray
+    }
+</style>
+<h2>stats</h2>
+<hr />
+<div class="sidenav">
+    <div class="row">
+        <div class="col-md-offset-2" style="margin-top:70px;color:ghostwhite;font-family: 'serif','Times New Roman', Times,;font-size:medium;">
+            <img src="~/Images/profile.jpg" style="width:50px;height:50px;border-radius:50px;border:1px solid;border-color:black;" />&nbsp;Pulkit.Agarwal
+        </div>
+    </div>
+    <table id="tbl2" class="table table-hover" style="margin-top:20px;background-color:#48929b">
+        <tr>
+            <th>
+                Avg. $ Trade
+            </th>
+            <td>
+                $ @Model.avg_gain
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Avg. $ Gain
+            </th>
+            <td>
+                $ @Model.avg_gainn
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning %
+            </th>
+            <td>
+                @Model.win_pct %
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Profit
+            </th>
+            <td>
+                $ @Model.tot_gain
+            </td>
+        </tr>
+
+
+    </table>
+
+    <table id="tbl3" style="width:100%">
+        <tr>
+            <th>
+                Total Trades
+            </th>
+            <td>
+                @Model.total_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning
+            </th>
+            <td>
+                @Model.win_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Losing
+            </th>
+            <td>
+                @Model.lose_trd
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+    <a href="/Home/stats/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View More Stats" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+    <a href="/Home/ProfitChart/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View Profit Chart" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+</div>
+
+
+<div class="main">
+
+    <span style="float:right;margin-bottom:20px">
+        @using (Html.BeginForm("stats", "Home", FormMethod.Post))
+    {
+        @Html.DropDownList("No", new List<SelectListItem>() { new SelectListItem() { Text = "Last 1 Month", Value = "1" },
+   new SelectListItem() { Text = "Last 3 Months", Value = "3" },
+   new SelectListItem() { Text = "Last 1 Year", Value = "12" },
+    new SelectListItem() { Text = "Last 15 Trades", Value = "15" },
+   new SelectListItem() { Text = "Last 25 Trades", Value = "25" }},"All Trades"
+       )
+        <input type="submit" value="Filter" />
+    }
+    </span>
+    
+    <table class="table" id="main-table">
+
+        <tr>
+            <th colspan="2">
+
+            </th>
+            <td style="font-weight:bolder">All Trades</td>
+            <td style="font-weight:bolder">Long Trades</td>
+            <td style="font-weight:bolder">Short Trades</td>
+        </tr>
+        <tr id="tdTot">
+            <th colspan="2">
+                Total Profit
+            </th>
+            <td>
+                @Model.tot_gain $
+            </td>
+            <td>
+                @buy.tot_gain $
+            </td>
+            <td>
+                @sell.tot_gain $
+            </td>
+        </tr>
+        <tr id="tdProfit">
+            <th colspan="2">
+                Gross Profit
+            </th>
+            <td>
+                @Model.gross_profit $
+            </td>
+            <td>
+                @buy.gross_profit $
+            </td>
+            <td>
+                @sell.gross_profit $
+            </td>
+        </tr>
+        <tr id="tdLoss">
+            <th colspan="2">
+                Gross Loss
+            </th>
+            <td>
+                @Model.gross_loss $
+            </td>
+            <td>
+                @buy.gross_loss $
+            </td>
+            <td>
+                @sell.gross_loss $
+            </td>
+        </tr>
+
+        <tr>
+            <th colspan="2">
+                % Profitable
+            </th>
+            <td>
+                @Model.win_pct %
+            </td>
+            <td>
+                @buy.win_pct %
+            </td>
+            <td>
+                @sell.win_pct %
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Total Trades
+            </th>
+            <td>
+                @Model.total_trd
+            </td>
+            <td>
+                @buy.total_trd
+            </td>
+            <td>
+                @sell.total_trd
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Winning Trades
+            </th>
+            <td>
+                @Model.win_trd
+            </td>
+            <td>
+                @buy.win_trd
+            </td>
+            <td>
+                @sell.win_trd
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Losing Trades
+            </th>
+            <td>
+                @Model.lose_trd
+            </td>
+            <td>
+                @buy.lose_trd
+            </td>
+            <td>
+                @sell.lose_trd
+            </td>
+        </tr>
+
+        <tr id="largWin">
+            <th colspan="2">
+                Largest Winning Trade
+            </th>
+            <td>
+                @Model.largest_winning $
+            </td>
+            <td>
+                @buy.largest_winning $
+            </td>
+            <td>
+                @sell.largest_winning $
+            </td>
+        </tr>
+        <tr id="largLose">
+            <th colspan="2">
+                Largest Losing Trade
+            </th>
+            <td>
+                @Model.largest_losing $
+            </td>
+            <td>
+                @buy.largest_losing $
+            </td>
+            <td>
+                @sell.largest_losing $
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Max. Consecutive Winning Trades
+            </th>
+            <td>
+                @Model.consecutive_win
+            </td>
+            <td>
+                @buy.consecutive_win
+            </td>
+            <td>
+                @sell.consecutive_win
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">
+                Max. Consecutive Losing Trades
+            </th>
+            <td>
+                @Model.consecutive_lose
+            </td>
+            <td>
+                @buy.consecutive_lose
+            </td>
+            <td>
+                @sell.consecutive_lose
+            </td>
+        </tr>
+    </table>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        
+        
+        $("#tdProfit td").css("color", "green");
+        $("#tdLoss td").css("color", "red");
+        if (parseFloat($("#tdTot td").first().text()) > 0) {
+            $("#tdTot td").first().css("color", "green");
+        }
+        else {
+            $("#tdTot td").first().css("color", "red");
+        }
+        if (parseFloat($("#tdTot td").first().next().text()) > 0) {
+            $("#tdTot td").first().next().css("color", "green");
+        }
+        else {
+            $("#tdTot td").first().next().css("color", "red");
+        }
+        if (parseFloat($("#tdTot td").first().next().next().text()) > 0) {
+            $("#tdTot td").first().next().next().css("color", "green");
+        }
+        else {
+            $("#tdTot td").first().next().next().css("color", "red");
+        }
+
+        if (parseFloat($("#largWin td").first().text()) > 0) {
+            $("#largWin td").first().css("color", "green");
+        }
+        else {
+            $("#largWin td").first().css("color", "red");
+        }
+        if (parseFloat($("#largWin td").first().next().text()) > 0) {
+            $("#largWin td").first().next().css("color", "green");
+        }
+        else {
+            $("#largWin td").first().next().css("color", "red");
+        }
+        if (parseFloat($("#largWin td").first().next().next().text()) > 0) {
+            $("#largWin td").first().next().next().css("color", "green");
+        }
+        else {
+            $("#largWin td").first().next().next().css("color", "red");
+        }
+
+        if (parseFloat($("#largLose td").first().text()) > 0) {
+            $("#largLose td").first().css("color", "green");
+        }
+        else {
+            $("#largLose td").first().css("color", "red");
+        }
+        if (parseFloat($("#largLose td").first().next().text()) > 0) {
+            $("#largLose td").first().next().css("color", "green");
+        }
+        else {
+            $("#largLose td").first().next().css("color", "red");
+        }
+        if (parseFloat($("#largLose td").first().next().next().text()) > 0) {
+            $("#largLose td").first().next().next().css("color", "green");
+        }
+        else {
+            $("#largLose td").first().next().next().css("color", "red");
+        }
+    });
+</script>

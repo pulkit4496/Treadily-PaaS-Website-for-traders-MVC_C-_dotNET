@@ -1,0 +1,380 @@
+﻿@model MainSite.Models.GetData
+@{
+    ViewBag.Title = "ViewTrade";
+    MainSite.Models.UserData usr = (MainSite.Models.UserData)Session["UserData"];
+}
+
+<link href="~/Content/mystyle.css" rel="stylesheet" />
+<h2>View</h2>
+<style>
+    tr th, td {
+        text-align: center;
+    }
+
+    #tbl1 tr td {
+        text-align: start;
+        width: 50%;
+    }
+
+    #tbl2 tr td {
+        color: black;
+    }
+
+    #tbl3 tr td, tr th {
+        text-align: start;
+        padding: 10px;
+    }
+
+    img.stretchy {
+        width: 100%; /*Tells image to fit to width of parent container*/
+    }
+
+    .contain {
+        width: 33%; /*Use this to control width of the parent container, hence the image*/
+    }
+</style>
+<div class="sidenav">
+    <div class="row">
+        <div class="col-md-offset-2" style="margin-top:70px;color:ghostwhite;font-family: 'serif','Times New Roman', Times,;font-size:medium;">
+            <img src="~/Images/profile.jpg" style="width:50px;height:50px;border-radius:50px;border:1px solid;border-color:black;" />&nbsp;Pulkit.Agarwal
+        </div>
+    </div>
+    <table id="tbl2" class="table table-hover" style="margin-top:20px;background-color:#48929b">
+        <tr>
+            <th>
+                Avg. $ Trade
+            </th>
+            <td>
+                $ @usr.avg_gain
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Avg. $ Gain
+            </th>
+            <td>
+                $ @usr.avg_gainn
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning %
+            </th>
+            <td>
+                @usr.win_pct %
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Profit
+            </th>
+            <td>
+                $ @usr.tot_gain
+            </td>
+        </tr>
+
+
+    </table>
+
+    <table id="tbl3" style="width:100%">
+        <tr>
+            <th>
+                Total Trades
+            </th>
+            <td>
+                @usr.total_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning
+            </th>
+            <td>
+                @usr.win_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Losing
+            </th>
+            <td>
+                @usr.lose_trd
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+    <a href="/Home/stats/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View More Stats" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+    <a href="/Home/ProfitChart/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View Profit Chart" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+</div>
+<div class="main">
+    @{
+        var a = Model.BuySell;
+        var b = "";
+        var c = "";
+
+        var d = Model.Profit.Split(' ').ToArray()[1];
+        var e = "";
+        var f = Model.ID;
+        var h = "/Images/data/" + Model.chartImage;
+        var per = (100 * float.Parse(Model.Profit.Split(' ').ToArray()[0].Trim('(', ')')) / (Model.Quantity * Model.StartPrice)).ToString("0.00");
+        if (a == "Buy")
+        {
+            b = "Long";
+            e = "#066F11";
+        }
+        else
+        {
+            b = "Short";
+            e = "#C30505";
+        }
+
+        if (d == "Profit")
+        {
+
+            c = "#6B8E23";
+        }
+        else
+        {
+
+            c = "#DC143C";
+        }
+    }
+    <hr />
+
+
+    <div style="color:ghostwhite;display: block;text-align:center ; background-color:#000;border-radius:5px; height:60px;line-height:60px;font-size:medium;font-weight:900;font-family:'Times New Roman', Times, serif " class="row">
+
+        @*<div id="did" style="display:none">@Html.DisplayFor(x => Model.ID)</div>*@
+
+        @*@Html.ActionLink("View", "PopUpp", new { id = Model.ID })*@
+        <div class="priceBtn col-md-2">
+
+            <span style="color:ghostwhite;">
+                @Html.DisplayFor(x => Model.Profit)
+            </span>
+        </div>
+
+        <div class="col-md-offset-9">
+            <strong>@Html.DisplayFor(x => Model.TickerName)</strong>&nbsp;<span style="background-color:lightgoldenrodyellow;padding:1px;color:@e;border-radius:3px">@b</span>@*Stock*@
+        </div>
+
+    </div>
+
+    <div style="font-size:13px;color:black;left:0;top:0;padding:6px">Date : @Model.post_date</div>
+    <br />
+    <div style="border-color:burlywood;border-width:1.2px;border-style:solid;border-color:forestgreen;padding:8px; border-radius:10px">
+        @Html.DisplayFor(x => Model.Comments)
+    </div>
+
+    <div id="img1" style="border-color:burlywood;border-width:1.2px;border-style:solid;border-color:forestgreen;padding:8px; border-radius:10px;">
+        <center> <a id="popBtn" href="javascript:void(0);"> <img src="@h" style="max-width:700px;max-height:500px" /> </a></center>
+    </div>
+
+    <div class="row">
+        <div id="did" style="display:none">@Html.DisplayFor(x => Model.ID)</div>
+        <div class="col-md-offset-10">
+            <span id="bel">@Html.DisplayFor(x => Model.Believe)</span><a href="#" class="btnBelieve"><img src="~/Images/believe.jpg" style="width:20px;height:20px" /></a>
+            &nbsp;
+            <span id="lik">@Html.DisplayFor(x => Model.Likes)</span><a href="#" class="btnLike"><img src="~/Images/like.jpg" style="width:20px;height:20px" /></a>
+            &nbsp;
+            <span id="dis">@Html.DisplayFor(x => Model.Dislikes)</span><a href="#" class="btnDislike"><img src="~/Images/dislike.jpg" style="width:20px;height:20px" /></a>
+        </div>
+    </div>
+    <br />
+    <hr />
+    @*<div style="font-size:medium;font-display:auto ;color:brown">
+            Entry Price : @Html.DisplayFor(x => x.StartPrice)
+        </div>
+        <div style="font-size:medium;font-display:auto;color:brown">
+            Exit Price : @Html.DisplayFor(x => x.EndPrice)
+        </div>*@
+    <table class="table">
+        <tr>
+            <th style="text-align: center!important">
+
+            </th>
+            <th style="text-align: center!important">
+                Date
+            </th>
+            <th style="text-align: center!important">
+                Price
+            </th>
+        </tr>
+        <tr>
+            <th style="text-align: center!important">
+                Entry
+            </th>
+            <td style="text-align: center!important">
+                @DateTime.Parse(Html.DisplayFor(x => x.Date).ToString()).ToString("MMMM dd, yyy")
+            </td>
+            <td style="text-align: center!important">
+                @Html.DisplayFor(x => x.StartPrice)
+            </td>
+        </tr>
+        <tr>
+            <th style="text-align: center!important">
+                Exit
+            </th>
+            <td style="text-align: center!important">
+                @DateTime.Parse(Html.DisplayFor(x => x.Date).ToString()).ToString("MMMM dd, yyy")
+            </td>
+            <td style="text-align: center!important">
+                @Html.DisplayFor(x => x.EndPrice)
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <table class="table" id="tbl1">
+        <tr>
+            <td>
+                Total Views
+            </td>
+            <td>
+                @Model.TotalViews
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Position Size
+            </td>
+            <td>
+                @Model.Quantity
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Percentage
+            </td>
+            <td>
+                <span style="background-color:@c;color:ghostwhite;padding:1px;border-radius:3px"> @per % </span>
+            </td>
+        </tr>
+    </table>
+    <hr />
+    <hr class="row" style="border-color:saddlebrown" />
+    <br /><br /><br />
+</div>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<div id='myModal'
+     class='modal'
+     style="text-align:right;">
+    <div class="modal-dialog"
+         style="width:950px; height:550px; padding:10px;">
+        <div class="modal-content"
+             style="overflow:auto;padding:10px;background-image:url(../../xml/cloud.jpeg);background-repeat:no-repeat;background-size:cover">
+            <button type="button"
+                    id="closebtn">
+                X
+            </button><div style="height:10px;"></div> <div id='myModalContent'
+                                                           style="width:900px;height:550px;padding:10px;"></div>
+        </div>
+    </div>
+</div>
+<script>
+
+        $(function () {
+            $("#popBtn").click(function () {
+                var ajaxCallURL = '/Home/PopUp?id=' + @Model.ID.ToString();
+
+
+                $.ajax({
+                    //type: "GET",
+                    url: ajaxCallURL,
+                    contentType: "application/json;charset=utf-8",
+                    datatype: "json",
+                    success: function (data) {
+                        //debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal('show');
+                    },
+                    error: function (error) {
+                        //debugger;
+                        alert(error.responseText);
+                        alert("load error");
+                    }
+                });
+
+            });
+            $("#closebtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+        $(document).ready(function () {
+            if (@Model.chartImage.Length == 0)
+            {
+                $("#img1").hide();
+            }
+        });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $(".btnBelieve").click(function () {
+            var ajaxCallURL = "/Home/Believe/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#bel").text();
+            $(this).prev("#bel").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;x
+
+
+
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+        $(".btnLike").click(function () {
+            var ajaxCallURL = "/Home/Like/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#lik").text();
+            $(this).prev("#lik").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+        $(".btnDislike").click(function () {
+            var ajaxCallURL = "/Home/Dislike/" + $(this).parent().parent().find("#did").text();
+            var a = $(this).prev("#dis").text();
+            $(this).prev("#dis").text(parseInt(a) + 1);
+            $.ajax({
+                //type: "GET",
+                url: ajaxCallURL,
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    // $("#dis").text(parseInt(a)+1);
+                    //$(this).prev("#dis").text(parseInt(a) + 1);
+                },
+                error: function (error) {
+                    //debugger;
+                    alert(error.responseText);
+                    alert("load error");
+                }
+            });
+        });
+    });
+</script>

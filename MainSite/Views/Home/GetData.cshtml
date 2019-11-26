@@ -1,0 +1,211 @@
+﻿@model MainSite.Models.GetData
+
+@{
+    ViewBag.Title = "Register";
+    TempData["postdate"] = DateTime.Now.ToString("MMMM dd, yyy hh:mm");
+}
+<style>
+    table {
+        width: 100%;
+        background-color: antiquewhite
+    }
+
+    .hiddenarea {
+        color: red;
+        font-size: 1.1em
+    }
+
+    #cmp {
+        color: red;
+    }
+</style>
+<br /><br />
+<br />
+<center>
+    <h2 style="color:darkgreen">Enter New Trade</h2>
+</center>
+
+@using (Html.BeginForm("GetData", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @*@Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
+    <table class="table">
+        <tr>
+            <td style="width:30%">@Html.LabelFor(x => x.TickerName)<span id="cmp">*</span></td>
+            <td style="width:30%">@Html.TextBoxFor(x => x.TickerName, new { @class = "form-control" })</td>
+            <td>@Html.ValidationMessageFor(x => x.TickerName, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+
+
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Date)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.Date, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.Date, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.StartTime)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.StartTime, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.StartTime, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.EndTime)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.EditorFor(m => m.EndTime, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.EndTime, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Quantity)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.Quantity, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.StartPrice)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.StartPrice, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.StartPrice, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.EndPrice)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.EndPrice, new { @class = "form-control" })
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.EndPrice, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.BuySell)<span id="cmp">*</span>
+            </td>
+            <td>
+                @Html.RadioButtonFor(m => m.BuySell, "Buy", htmlAttributes: new { @class = "radiobuy" }) Buy &nbsp;&nbsp;
+                @Html.RadioButtonFor(m => m.BuySell, "Sell", htmlAttributes: new { @class = "radiobuy" }) Sell &nbsp;&nbsp;
+
+            </td>
+            <td>@Html.ValidationMessageFor(x => x.BuySell, "", htmlAttributes: new { @class = "hiddenarea", @id = "txtErr" })</td>
+
+        </tr>
+        <tr>
+            <td>&#0036; @Html.LabelFor(m => m.Profit)</td>
+
+            <td id="dlr" style="display:none">&#0036; <span id="txtProfit"></span></td>
+            <td>@Html.HiddenFor(x => x.Profit, htmlAttributes: new { id = "hdnProfit" })</td>
+
+
+        </tr>
+        <tr>
+            <td>% @Html.LabelFor(m => m.Profit)</td>
+
+            <td id="dlrP" style="display:none"><span id="txtProfitP"></span></td>
+
+
+
+        </tr>
+        <tr>
+            <td>
+                <label for="file">Upload Image:</label>
+
+            </td>
+            <td>
+                <input type="file" name="file" id="file" style="width: 100%;" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(m => m.Comments)
+            </td>
+            <td>
+                @*@Html.HiddenFor(x => x.Comments, htmlAttributes: new { id = "hdnComments" })*@
+                @Html.EditorFor(m => m.Comments, new { @class = "form-control" })
+                @Html.HiddenFor(x => x.ID)
+            </td>
+        </tr>
+
+
+
+
+        <tr><td><div id="Label"></div></td></tr>
+    </table>
+
+    <input type="submit" value="Submit" id="SubmitData" />
+
+}
+<br /><br />
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/modernizr-2.8.3.js"></script>
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+<script>
+    @* $(document).ready(function () {
+        $("#file1").val("@Model.file1");
+
+    });*@
+
+    $(".radiobuy").change(function () {
+
+        var sid = $(this).val();
+        var a = $("#StartPrice").val();
+        var b = $("#EndPrice").val();
+        var c = $("#Quantity").val();
+        if (sid == "Buy") {
+            var d = parseFloat(b) - parseFloat(a);
+            var e = ((parseFloat(d) / parseFloat(a)) * 100).toFixed(2);
+            if (d > 0) {
+                $("#txtProfit").text((parseFloat(d) * parseFloat(c)).toFixed(2) + " Profit");
+                $("#dlr").show();
+                $("#dlrP").show();
+                $("#txtProfitP").text(e + "% Profit");
+                $("#hdnProfit").val("(" + parseFloat(d) * parseFloat(c) + ") Profit");
+            }
+
+            else {
+                $("#txtProfit").text((parseFloat(d) * parseFloat(c)).toFixed(2) + " Loss");
+                $("#dlr").show();
+                $("#dlrP").show();
+                $("#txtProfitP").text(e + "% Loss");
+                $("#hdnProfit").val("(" + parseFloat(d) * parseFloat(c) + ") Loss");
+            }
+
+        }
+        else if (sid == "Sell") {
+            var d = parseFloat(a) - parseFloat(b);
+            var e = ((parseFloat(d) / parseFloat(a)) * 100).toFixed(2);
+            if (d > 0) {
+                $("#txtProfit").text((parseFloat(d) * parseFloat(c)).toFixed(2) + " Profit");
+                $("#dlr").show();
+                $("#dlrP").show();
+                $("#txtProfitP").text(e + "% Profit");
+                $("#hdnProfit").val("(" + parseFloat(d) * parseFloat(c) + ") Profit");
+            }
+
+            else {
+                $("#txtProfit").text((parseFloat(d) * parseFloat(c)).toFixed(2) + " Loss");
+                $("#dlr").show();
+                $("#dlrP").show();
+                $("#txtProfitP").text(e + "% Loss");
+                $("#hdnProfit").val("(" + parseFloat(d) * parseFloat(c) + ") Loss");
+            }
+
+        }
+    });
+
+
+
+
+</script>

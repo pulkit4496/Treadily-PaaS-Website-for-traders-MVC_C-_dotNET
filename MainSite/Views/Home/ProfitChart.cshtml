@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "ProfitChart";
+    MainSite.Models.UserData usr = (MainSite.Models.UserData)Session["UserData"];
+}
+<link href="~/Content/mystyle.css" rel="stylesheet" type="text/css" />
+<style>
+    th, td, table {
+        text-align: center;
+    }
+
+    #tbl1 td {
+        text-align: start;
+        width: 50%;
+    }
+
+    #tbl2 td {
+        color: black;
+    }
+
+    #tbl3 td, th {
+        text-align: start;
+        padding: 10px;
+    }
+</style>
+<h2>ProfitChart</h2>
+<br />
+<div class="sidenav">
+    <div class="row">
+        <div class="col-md-offset-2" style="margin-top:70px;color:ghostwhite;font-family: 'serif','Times New Roman', Times,;font-size:medium;">
+            <img src="~/Images/profile.jpg" style="width:50px;height:50px;border-radius:50px;border:1px solid;border-color:black;" />&nbsp;Pulkit.Agarwal
+        </div>
+    </div>
+    <table id="tbl2" class="table table-hover" style="margin-top:20px;background-color:#48929b">
+        <tr>
+            <th>
+                Avg. $ Trade
+            </th>
+            <td>
+                $ @usr.avg_gain
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Avg. $ Gain
+            </th>
+            <td>
+                $ @usr.avg_gainn
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning %
+            </th>
+            <td>
+                @usr.win_pct %
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Profit
+            </th>
+            <td>
+                $ @usr.tot_gain
+            </td>
+        </tr>
+
+
+    </table>
+
+    <table id="tbl3" style="width:100%">
+        <tr>
+            <th>
+                Total Trades
+            </th>
+            <td>
+                @usr.total_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Winning
+            </th>
+            <td>
+                @usr.win_trd
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Losing
+            </th>
+            <td>
+                @usr.lose_trd
+            </td>
+        </tr>
+
+    </table>
+    <hr />
+    <a href="/Home/stats/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View More Stats" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+    <a href="/Home/ProfitChart/" style="margin:0px;padding:0px;"><input class="btn-success" type="button" value="View Profit Chart" style="background-color:dodgerblue;font-size:medium;width:100%;" /></a>
+</div>
+
+<div class="main" id="chartContainer" style="margin-top:30px">
+
+</div>
+    <script>
+        window.onload = function () {
+
+            var dataPoints = [];
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                zoomEnabled: true,
+                title: {
+                    text: "Total Profit Chart",
+                    fontColor : "cadetblue"
+                },
+                axisY: {
+                    title: "USD",
+                    titleFontSize: 24,
+                    titleFontColor: "seagreen",
+                    includeZero: false,
+                    prefix: "$",
+                    crosshair: {
+                        enabled: true,
+                        valueFormatString: "$#,##0.##",
+                        snapToDataPoint: true
+                    }
+                },
+                axisX: {
+                    title: "Date",
+                    titleFontSize: 24,
+                    titleFontColor: "seagreen",
+                    includeZero: false,
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    }
+                },
+                data: [{
+                    type: "line",
+                    markerType: "none",
+                    lineColor: "Blue",
+                    lineThickness: 2,
+                    yValueFormatString: "$#,##0.##",
+                    xValueFormatString: "MMM DD YYYY",
+                    dataPoints: dataPoints
+                }]
+            });
+
+            function addData(data) {
+                for (var i = 0; i < data.length; i++) {
+                    dataPoints.push({
+                        x: new Date(data[i].x),
+                        y: data[i].y
+                    });
+                }
+                chart.render();
+
+            }
+
+            $.getJSON("/home/JSON", addData);
+
+        }
+    </script>
+    <hr />
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/jquery.canvasjs.min.js"></script>
